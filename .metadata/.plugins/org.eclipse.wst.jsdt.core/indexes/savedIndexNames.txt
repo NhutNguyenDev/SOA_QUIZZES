@@ -1,0 +1,8 @@
+INDEX VERSION 1.4+D:\SOA_SRC_MAIN\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+514154343.index
+2704701182.index
+3656258783.index
+1828001080.index
+2928069736.index
+1705646340.index
+2839296087.index
