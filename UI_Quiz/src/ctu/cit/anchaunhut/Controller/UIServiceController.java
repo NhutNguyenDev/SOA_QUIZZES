@@ -1,6 +1,20 @@
 package ctu.cit.anchaunhut.Controller;
 
 import java.io.PrintWriter;
+import java.io.StringReader;
+import java.net.URI;
+
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriBuilder;
+
+import org.glassfish.jersey.client.ClientConfig;
 
 import ctu.cit.anchaunhut.Handle.UiService_Component;
 
@@ -32,10 +46,16 @@ public class UIServiceController {
 		UiService.script(out);
 	}
 	
-
+	public void getAllQuiz(PrintWriter out, String user_id) {
+		UiService.getAllQuiz(out, user_id);
+	}
 
 	public void css(PrintWriter out) {
 		UiService.css(out);
+	}
+	
+	public void cssHomePage(PrintWriter out) {
+		UiService.cssHomePage(out);
 	}
 	
 	

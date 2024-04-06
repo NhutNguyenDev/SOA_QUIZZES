@@ -57,6 +57,8 @@ public class DashBoard_Admin extends HttpServlet {
 
 		out.println("<a class=\"button\" onclick=\"addNewQuiz()\">Add New Quiz</a><br>");
 		
+		
+		// When create New Quiz, and have user take the exam, can't delete question 
 		// Form Add new Quiz
 		formAddNewQuiz();
 
@@ -83,69 +85,15 @@ public class DashBoard_Admin extends HttpServlet {
 		out.println("    <input type=\"hidden\" id=\"creator_id\" name=\"creator_id\" value=\"1\">");
 		out.println("");
 		out.println("    <label for=\"quiz_title\">Quiz Title:</label><br>");
-		out.println("    <input type=\"text\" id=\"quiz_title\" name=\"quiz_title\"><br><br>");
+		out.println("    <input type=\"text\" id=\"quiz_title\" name=\"quiz_title\" required><br><br>");
 		out.println("");
 		out.println("    <label for=\"quiz_description\">Quiz Description:</label><br>");
-		out.println("    <textarea id=\"quiz_description\" name=\"quiz_description\"></textarea><br><br>");
+		out.println("    <textarea id=\"quiz_description\" name=\"quiz_description\" required></textarea><br><br>");
 		out.println("");
 		out.println("    <input type=\"submit\" value=\"Submit\">");
 		out.println("</form>");
 		out.println("</div>");
 	}
 
-//	private void getInformation(Map<String, String[]> parameterMap) {
-//		for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
-//
-//			String parameterName = entry.getKey();
-//			int checkquiz_title = 0;
-//			int checkquiz_description = 0;
-//
-//			if (parameterName.compareTo("quiz_title") == 0) {
-//				checkquiz_title = 1;
-//			} else if (parameterName.compareTo("quiz_description") == 0) {
-//				checkquiz_description = 1;
-//			}
-//
-////	    	ParamValue must be String[], it can have OBJ inside
-//			String[] paramValues = entry.getValue();
-//
-//			for (String paramValue : paramValues) {
-//				if (checkquiz_title == 1) {
-//					quiz_title = paramValue;
-//				} else if (checkquiz_description == 1) {
-//					quiz_description = paramValue;
-//				} else{
-//					creator_id = paramValue;
-//				}
-//			}
-//
-//		}
-//		if(quiz_title != "" && quiz_description != "" && creator_id != "") {
-//			ClientConfig config = new ClientConfig();
-//			Client client = ClientBuilder.newClient(config);
-//
-//			URI uri = UriBuilder.fromUri("http://localhost:8080/Quiz/api/quiz/new").build();
-//
-//			WebTarget target = client.target(uri);
-//
-//			// Create a JSON object representing your request data
-//			JsonObject requestData = Json.createObjectBuilder()
-//					.add("quiz_title", quiz_title)
-//					.add("quiz_description", quiz_description)
-//					.add("creator_id", creator_id)
-//					.build();
-//
-//			// Send a POST request with the JSON data
-//			Response response = target.request(MediaType.APPLICATION_JSON).post(Entity.json(requestData));
-//
-//			// Read the response body
-//			String jsonResponse = response.readEntity(String.class);
-//
-//			// Close the response
-//			response.close();
-//			
-////			out.println(jsonResponse);
-//		}
-//	}
 
 }

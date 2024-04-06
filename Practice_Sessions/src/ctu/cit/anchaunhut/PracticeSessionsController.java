@@ -35,6 +35,16 @@ public class PracticeSessionsController {
 		return practiceSessionsService.readPracticeSessions(session_id);
 
 	}
+	@GET
+	@Path("/readScore")
+	@Consumes(MediaType.APPLICATION_XML)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String readPracticeSessionsScore(@QueryParam("session_id") String session_id)
+			throws ClassNotFoundException, SQLException {
+
+		return practiceSessionsService.readPracticeSessionsScore(session_id);
+
+	}
 
 ////	Return List of Sessions by Quiz_id + User_id is parameter
 	@GET
@@ -65,14 +75,14 @@ public class PracticeSessionsController {
 //        return questionsService.deleteQuestion(question_id);
 //	}
 //	
-//	@GET
-//	@Path("/deleteWithQuizId")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public String delet_All_Question_With_QuizID(@QueryParam("quiz_id") String quiz_id) throws ClassNotFoundException, SQLException {  
-//        
-//        return questionsService.delete_All_Question_With_QuizID(quiz_id);
-//	}
+	@GET
+	@Path("/deleteWithQuizId")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public String delet_All_Question_With_QuizID(@QueryParam("quiz_id") String quiz_id) throws ClassNotFoundException, SQLException {  
+        
+        return questionsService.delete_All_Question_With_QuizID(quiz_id);
+	}
 //	
 //	@GET
 //	@Path("/checkCorrect")

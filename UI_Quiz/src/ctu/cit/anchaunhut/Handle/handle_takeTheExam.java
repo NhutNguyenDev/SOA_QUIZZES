@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -22,11 +23,11 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.glassfish.jersey.client.ClientConfig;
 
-@WebServlet("/handle_Form")
-public class handle_Form extends HttpServlet {
+@WebServlet("/handle_takeTheExam")
+public class handle_takeTheExam extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public handle_Form() {
+	public handle_takeTheExam() {
 		super();
 	}
 
@@ -46,53 +47,57 @@ public class handle_Form extends HttpServlet {
 		// Iterate over the parameter map and print parameter names and values
 		for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
 
-			// Get id of User_id
-			if (entry.getKey().compareTo("user_id") == 0) {
+			String parameterName = entry.getKey();
+			String[] paramValues = entry.getValue();
 
-				String[] paramValues = entry.getValue();
-				for (String paramValue : paramValues) {
+			for (String paramValue : paramValues) {
+				if (parameterName.compareTo("user_id") == 0) {
 					user_id = paramValue;
-				}
+				} else if (parameterName.compareTo("quiz_id") == 0) {
 
-				// Get quiz_id
-			} else if (entry.getKey().compareTo("quiz_id") == 0) {
-
-				String[] paramValues = entry.getValue();
-				for (String paramValue : paramValues) {
 					quiz_id = paramValue;
-				}
-				// Get Question and User_Answer + Check correct
-			} else if (entry.getKey().compareTo("session_id") == 0) {
+					// Get Question and User_Answer + Check correct
+				} else if (parameterName.compareTo("session_id") == 0) {
 
-				String[] paramValues = entry.getValue();
-				for (String paramValue : paramValues) {
 					session_id = paramValue;
-				}
-				// Get Question and User_Answer + Check correct
-			} else {
 
-				String question_id = entry.getKey();
-				String userAnswer = "";
+					// Get Question and User_Answer + Check correct
+				} else {
+
+					String question_id = entry.getKey();
+					String userAnswer = "";
 
 //	    	ParamValue must be String[], it can have OBJ inside
-				String[] paramValues = entry.getValue();
 
-				for (String paramValue : paramValues) {
 					userAnswer = paramValue;
-				}
 
-				// Check correct for each question
-				if (checkCorrectAnser(question_id, userAnswer).compareTo("true") == 0) {
-					countCorrect++;
-					// Add new Answer with each question ( TRUE answer )
-					out.println(addAnswer(session_id, question_id, userAnswer, "true"));
+					// Check correct for each question
+					if (checkCorrectAnser(question_id, userAnswer).compareTo("true") == 0) {
+						countCorrect++;
+						// Add new Answer with each question ( TRUE answer )
+//						out.println(addAnswer(session_id, question_id, userAnswer, "true"));
+						addAnswer(session_id, question_id, userAnswer, "true");
+					} else {
+						// Add new Answer with each question ( FALSE answer )
+						addAnswer(session_id, question_id, userAnswer, "false");
+//						out.println(addAnswer(session_id, question_id, userAnswer, "false"));
+					}
 				}
-				// Add new Answer with each question ( FALSE answer )
-				out.println(addAnswer(session_id, question_id, userAnswer, "false"));
 			}
 		}
 		out.println("So cau dung: " + countCorrect);
 		out.println("session_id:" + session_id);
+		
+		// Add to Session
+		HttpSession session = request.getSession();
+		
+		session.setAttribute("session_id", session_id);
+		session.setAttribute("number_correct", countCorrect);
+		
+		response.sendRedirect("/UI_Quiz/homePage");
+
+		
+		
 
 	}
 

@@ -19,6 +19,9 @@ import javax.ws.rs.core.UriBuilder;
 
 import org.glassfish.jersey.client.ClientConfig;
 
+import ctu.cit.anchaunhut.Controller.UIServiceController;
+
+
 public class UiService_Component {
 
 
@@ -96,6 +99,70 @@ public class UiService_Component {
 		// Start out.println() data Question to UI
 		System.out.println("GetQuestionById - Start convert data Question to HTML");
 		convertQuestionToHTML(out, response, is_correct, user_answer);
+	}
+	
+	
+	public void getAllQuiz(PrintWriter out, String user_id) {
+		ClientConfig config = new ClientConfig();
+		Client client = ClientBuilder.newClient(config);
+
+		URI uri = UriBuilder.fromUri("http://localhost:8080/Quiz/api/quiz/readAllQuiz").build();
+
+		WebTarget target = client.target(uri);
+
+		String response = target.request().accept(MediaType.APPLICATION_JSON).get(String.class);
+
+		// Convert data String to HTML
+		convertListQuizToHTML(out, response, user_id);
+	}
+	private void convertListQuizToHTML(PrintWriter out, String listQuizString, String user_id) {
+		UIServiceController UiService = new UIServiceController();
+
+		// Convert dataQuiz ( contain question + option )
+		JsonReader jsonReader = Json.createReader(new StringReader(listQuizString));
+		JsonArray quizArray = jsonReader.readArray();
+
+		for (int i = 0; i < quizArray.size(); i++) {
+			JsonObject quizObj = quizArray.getJsonObject(i);
+
+			String quiz_id = quizObj.getString("quiz_id");
+			String quiz_title = quizObj.getString("quiz_title");
+			String quiz_description = quizObj.getString("quiz_description");
+			String creator_id = quizObj.getString("creator_id");
+			String created_at = quizObj.getString("created_at");
+
+			//// Start <div> contain each Quiz
+			out.println("<div id=\"quiz" + quiz_id
+					+ "\" style='border: 1px solid black; padding: 10px; margin-bottom: 10px;'>");
+
+			// Output quiz data======================================================
+			out.println("<p><strong>Title:</strong> " + quiz_title + "</p>");
+			out.println("<p><strong>Description:</strong> " + quiz_description + "</p>");
+			out.println("<p><strong>Created At:</strong> " + created_at + "</p>");
+			// Output quiz data======================================================
+
+			// FORM Take the exam====================================================================
+			out.println("<form method=\"POST\" action=\"/UI_Quiz/takeTheExam\" >");
+			
+			out.println("<input type=\"hidden\" name=\"quiz_id\" value=\""+ quiz_id +"\">");
+			out.println("<input type=\"hidden\" name=\"user_id\" value=\""+ user_id +"\">");
+
+
+			out.println("<button>Take the Exam</button>");
+			out.println("</form>");
+			// FORM Take the exam====================================================================
+
+			// Start <div> contain session of Quiz
+			out.println("<div id=\"session_with_quiz_id\" >");
+			
+			UiService.getAllSessionByQuiz_id(out, user_id, quiz_id);
+
+			// End <div> contain session of Quiz
+			out.println("</div>");
+			
+			//// End <div> contain each Quiz
+			out.println("</div>");
+		}
 	}
 
 	// All CSS OF PAGE
@@ -244,7 +311,7 @@ public class UiService_Component {
 		// Accessing questions
 
 //		Start FORM
-		out.println("<form action=\"/UI_Quiz/handle_Form\" method=\"POST\">");
+		out.println("<form action=\"/UI_Quiz/handle_takeTheExam\" method=\"POST\">");
 		JsonArray questionsArray = jsonObject.getJsonArray("question");
 		for (int i = 0; i < questionsArray.size(); i++) {
 
@@ -275,7 +342,7 @@ public class UiService_Component {
 				// Change input type to radio
 
 				out.println("<input type=\"radio\" id=\"" + optionId + "\" name=\"" + questionId + "\" value=\""
-						+ optionIdDB + "\">");
+						+ optionIdDB + "\" required>");
 				out.println("<label for=\"" + optionId + "\">" + optionText + "</label><br>");
 			}
 //			End div of option
@@ -365,15 +432,23 @@ public class UiService_Component {
 			String idContent = "content" + numberId++;
 			
 			// Div contains all Element of SESSION
-			out.println("<div class=\"collapsible\" onclick=\"toggleContent(' " + idContent + "')\">");
-			out.println("<h3>Session ID: " + sessionId + "User ID: " + userId + "Quiz ID: " + quizId + "Start Date: "
-					+ startDate + "End Date: " + endDate + "</h3><br>");
+			out.println("<div class=\"collapsible\" onclick=\"toggleContent('" + sessionId + "')\">");
+//			out.println("<h3>Session ID: " + sessionId + "User ID: " + userId + "Quiz ID: " + quizId + "Start Date: "
+//					+ startDate + "End Date: " + endDate + "</h3><br>");
+			out.println("Make test: " + startDate);
+			
+			// CODE HERE - GET_SCORE
+			//============================================================================================================
+			String score = getScoreOfSession(sessionId);
+			out.println(" Score : " + score);
+			//============================================================================================================
+
 			out.println("</div>");
 
 
 			JsonArray answersArray = sessionObj.getJsonArray("answers");
 			
-			out.println("<div class=\"content\" id=\" " + idContent + "\">");
+			out.println("<div class=\"content\" id=\"" + sessionId + "\">");
 			for (int j = 0; j < answersArray.size(); j++) {
 				JsonObject answerObj = answersArray.getJsonObject(j);
 
@@ -396,6 +471,31 @@ public class UiService_Component {
 		}
 
 		return "convertSUCCESS";
+	}
+	
+	public String getScoreOfSession(String session_id) {
+		ClientConfig config = new ClientConfig();
+		Client client = ClientBuilder.newClient(config);
+
+		URI uri = UriBuilder.fromUri("http://localhost:8080/Practice_Sessions/api/practiceSessions/readScore").build();
+
+		WebTarget target = client.target(uri);
+
+		String response = target.queryParam("session_id", session_id).request().accept(MediaType.APPLICATION_JSON)
+				.get(String.class);
+
+		return response;
+	}
+	
+	public void cssHomePage(PrintWriter out) {
+		out.println("<script>");
+		out.println("	    function hideScore_show() {\r\n" + 
+				"	        var infoBox = document.getElementById(\"score_show\");\r\n" + 
+				"	        infoBox.style.display = \"none\"; // Hide the info box\r\n" + 
+				"	    }\r\n" + 
+				"\r\n" + 
+				"	    setTimeout(hideScore_show, 4000); ");
+		out.println("</script>");
 	}
 
 

@@ -16,6 +16,7 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.json.JsonStructure;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -102,12 +103,34 @@ public class PracticeSessionsService {
 
 	}
 
+	public String readPracticeSessionsScore(String session_id) throws ClassNotFoundException, SQLException {
+		
+		int numberAnswer = 0;
+		int score = 0;
+		
+		String answerObj = read_All_Answers_With_SessionId(session_id);
+		
+		JsonReader jsonReader = Json.createReader(new StringReader(answerObj));
+		
+		JsonArray answerArray = jsonReader.readArray();
+		
+		for(int i = 0; i < answerArray.size(); i++) {
+			JsonObject answerObject = answerArray.getJsonObject(i);
+			numberAnswer++;
+			if(answerObject.getBoolean("is_correct")) {
+				score++;
+			}
+		}
+		
+		return  score+ "/" + numberAnswer;
+		
+	}
 	// This function support readWithAnswer() in PracticeSession - purpose return
 	// String Json data of all Answer with Session_id is parameter
 	public static String read_All_Answers_With_SessionId(String session_id) {
 		ClientConfig config = new ClientConfig();
 		Client client = ClientBuilder.newClient(config);
-
+ 
 		URI uri = UriBuilder.fromUri("http://localhost:8080/Answers/api/answers/readAll").build();
 
 		WebTarget target = client.target(uri);
@@ -118,77 +141,7 @@ public class PracticeSessionsService {
 		return response;
 	}
 
-//	public String updateQuestion(PracticeSessions question) throws SQLException {
-//		String sql = "UPDATE Questions SET quiz_id = ?, question_text = ? WHERE question_id = ?";
-//		Connection connection = null;
-//		try {
-//			connection = db.getConnection();
-//		} catch (ClassNotFoundException e) {
-//			System.out.println("Can't create connection to db in \"updateQuestion\" + : " + e);
-//		}
-//		try (PreparedStatement statement = connection.prepareStatement(sql)) {
-//			statement.setString(1, question.getQuiz_id());
-//			statement.setString(2, question.getQuestion_text());
-//			statement.setString(3, question.getQuestion_id());
-//
-//			statement.executeUpdate();
-//		}
-//		return "update \"QUESTION\" success ";
-//	}
-//
-//	public String deleteQuestion(String question_id) {
-//		String sql = "DELETE FROM Questions WHERE question_id = ?";
-//		String sqlDeleteOptions = "DELETE FROM Options WHERE question_id = ?";
-//
-//		Connection connection = null;
-//
-//		try {
-//			connection = db.getConnection();
-//
-////			Delete all options with questions_id
-//			PreparedStatement statementDeleteOptions = connection.prepareStatement(sqlDeleteOptions);
-//			statementDeleteOptions.setString(1, question_id);
-//			statementDeleteOptions.executeUpdate();
-//
-////			Delete question
-//			PreparedStatement statement = connection.prepareStatement(sql);
-//			statement.setString(1, question_id);
-//			statement.executeUpdate();
-//
-//		} catch (ClassNotFoundException e) {
-//			return "Can't create connection to db in \"deleteQuestion\"";
-//		} catch (SQLException e) {
-//			return "PreparedStatement in deleteQuestion not work !!! : " + e;
-//
-//		}
-//
-//		return "Delete \"QUESTION\" Success ";
-//	}
-//
-//	public String delete_All_Question_With_QuizID(String quiz_id) throws ClassNotFoundException, SQLException {
-//
-//		String sql = "SELECT * FROM Questions WHERE quiz_id = ?";
-//
-//		Connection connection = db.getConnection();
-//
-//		PreparedStatement statement = connection.prepareStatement(sql);
-//
-//		try {
-//			statement.setString(1, quiz_id);
-//
-//			ResultSet resultSet = statement.executeQuery();
-//
-//			while (resultSet.next()) {
-//				this.deleteQuestion(resultSet.getString("question_id"));
-//			}
-//		} catch (Exception e) {
-//			System.out.println("Resultset Don't work !!! :" + e);
-//		}
-//
-//		return "Delete All Question with Quiz_id SUCCESS";
-//
-//	}
-//
+
 
 	public String readAllSessionByUserIdvsQuizId(String quiz_id, String user_id) throws SQLException, ClassNotFoundException {
 
@@ -209,24 +162,6 @@ public class PracticeSessionsService {
 
 				System.out.println("Call \"readPracticeSessions\" with session_id: " + session_id);
 				listPracticeSession.add(this.readPracticeSessions(session_id));
-//				PracticeSessions practiceSessions = null;
-//
-//				practiceSessions = new PracticeSessions();
-//				practiceSessions.setSession_id(resultSet.getString("session_id"));
-//				practiceSessions.setUser_id(resultSet.getString("user_id"));
-//				practiceSessions.setQuiz_id(resultSet.getString("quiz_id"));
-//				Timestamp startTimestamp = resultSet.getTimestamp("start_date");
-//				if (startTimestamp != null) {
-//					LocalDateTime startDateTime = startTimestamp.toLocalDateTime();
-//					practiceSessions.setStart_date(startDateTime);
-//				}
-//
-//				// Retrieving end_date as LocalDateTime
-//				Timestamp endTimestamp = resultSet.getTimestamp("end_date");
-//				if (endTimestamp != null) {
-//					LocalDateTime endDateTime = endTimestamp.toLocalDateTime();
-//					practiceSessions.setEnd_date(endDateTime);
-//				}
 
 			}
 
@@ -237,66 +172,5 @@ public class PracticeSessionsService {
 
 		return listPracticeSession.toString();
 	}
-//	
-//	public String list_All_Question_With_QuizID(String quiz_id) throws SQLException, ClassNotFoundException{
-//		
-//		List<String> listQuestion = new ArrayList<>();
-//		
-//
-//		String sql = "SELECT * FROM Questions WHERE quiz_id = ?";
-//
-//		Connection connection = db.getConnection();
-//
-//		PreparedStatement statement = connection.prepareStatement(sql);
-//
-//		statement.setString(1, quiz_id);
-//		
-//		try (ResultSet resultSet = statement.executeQuery()) {
-//			while (resultSet.next()) {
-//				listQuestion.add(this.readQuestion(resultSet.getString("question_id")));
-//			}
-//
-//		} catch (Exception e) {
-//			System.out.println("Resultset Don't work !!! :" + e);
-//		}
-//		connection.close(); 
-//		
-//		return listQuestion.toString();
-//	}
-//
-////	Uanser is "ID OPTION " id choose for "ID QUESTION"
-//	public String checkCorrectQuestion(String question_id, String Uanswer) throws ClassNotFoundException, SQLException {
-//
-//		String dataQuestion = readQuestion(question_id);
-//		
-//		// Create a StringReader object
-//		StringReader stringReader = new StringReader(dataQuestion);
-//
-//		// Create a JsonReader object from StringReader
-//		JsonReader jsonReader = Json.createReader(stringReader);
-//
-//		// Get Question OBJ from JsonReader
-//		JsonObject jsonQuestion = jsonReader.readObject();
-//		
-//		// Get Options data - contatin array of multiple option		
-//		JsonArray jsonOptions = jsonQuestion.getJsonArray("options");
-//		
-//		// Loop each option.
-//		for(int i = 0; i < jsonOptions.size(); i++) {
-//			
-//			// Get option
-//			JsonObject jsonOption = jsonOptions.getJsonObject(i);
-//			
-//		// Check if option is_correct = true, continue check if "User Answer" = this option => Return True
-//			if(jsonOption.getBoolean("is_correct") == true) {
-//				if(jsonOption.getString("option_id").compareTo(Uanswer) == 0) {
-//					return "true";
-//				}
-//			}
-//
-//		}
-//
-//		return "false";
-//	}
 
 }

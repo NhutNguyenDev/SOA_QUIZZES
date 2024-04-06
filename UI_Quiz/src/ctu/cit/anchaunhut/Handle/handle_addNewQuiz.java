@@ -66,58 +66,7 @@ public class handle_addNewQuiz extends HttpServlet {
 		doGet(request, response);
 	}
 
-//	private String addNewQuiz() {
-//		ClientConfig config = new ClientConfig();
-//		Client client = ClientBuilder.newClient(config);
-//
-//		URI uri = UriBuilder.fromUri("http://localhost:8080/Questions/api/questions/new").build();
-//
-//		WebTarget target = client.target(uri);
-//
-//		// Create a JSON object representing your request data
-//		JsonObject requestData = Json.createObjectBuilder().add("quiz_id", quiz_id).add("question_text", question_text)
-//				.build();
-//
-//		// Send a POST request with the JSON data
-//		Response response = target.request(MediaType.APPLICATION_JSON).post(Entity.json(requestData));
-//
-//		// Throw EXCEPTION if status don't 200
-//		if (response.getStatus() != 200) {
-//			System.out.println("Insert question FAIL + response status: " + response.getStatus());
-//			throw new RuntimeException("Failed to add new question. Server returned status: " + response.getStatus());
-//
-//		}
-//		// Read the response body
-//		String jsonResponse = response.readEntity(String.class);
-//
-//		// Close the response
-//		response.close();
-//
-//		out.println("handle_addNewQuestion.addNewQuestion  ===> Add new Question success - " + question_text);
-//		return jsonResponse;
-//
-//	}
 
-//	private void getInformation(Map<String, String[]> parameterMap) {
-//
-//		for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
-//
-//			String parameterName = entry.getKey();
-//
-//			String[] paramValues = entry.getValue();
-//
-//			for (String paramValue : paramValues) {
-//				if (parameterName.compareTo("creator_id") == 0) {
-//					creator_id = paramValue;
-//				} else if (parameterName.compareTo("quiz_title") == 0) {
-//					quiz_title = paramValue;
-//				} else if (parameterName.compareTo("quiz_description") == 0) {
-//					quiz_description = paramValue;
-//				}
-//			}
-//		}
-//
-//	}
 	private void getInformation(Map<String, String[]> parameterMap) {
 		
 		for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {

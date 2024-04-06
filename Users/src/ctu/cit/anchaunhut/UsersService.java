@@ -25,27 +25,29 @@ public class UsersService {
 
 	private static db db = new db();
 
-	public String addUsers(Users question) throws ClassNotFoundException {
+	public String addUsers(Users user) throws ClassNotFoundException {
 
-		String sql = "INSERT INTO Questions (question_text, quiz_id) VALUES (?, ?)";
+		String sql = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
 
 		Connection connection = db.getConnection();
 		PreparedStatement preparedStatement;
 
 		try {
 			preparedStatement = connection.prepareStatement(sql);
-//			preparedStatement.setString(1, question.getQuestion_text());
-//			preparedStatement.setString(2, question.getQuiz_id());
+			preparedStatement.setString(1, user.getUserName());
+			preparedStatement.setString(2, user.getPassWord());
+			preparedStatement.setString(3, user.getEmail());
+
 			int rowsInserted = preparedStatement.executeUpdate();
 
 			if (rowsInserted > 0) {
 				connection.close();
-				return "A new \\ QUESTION \\ was added successfully.";
+				return "A new \\ USER \\ was added successfully.";
 			} else {
-				return "Failed to add new \\\\ QUESTION \\\\.";
+				return "Failed to add new \\\\ USER \\\\.";
 			}
 		} catch (SQLException e) {
-			return "PreparedStatement \\\\ QUESTION \\\\ not work !!! : " + e;
+			return "PreparedStatement \\\\ USER \\\\ not work !!! : " + e;
 		}
 
 	}

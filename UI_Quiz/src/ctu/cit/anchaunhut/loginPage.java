@@ -14,66 +14,48 @@ import ctu.cit.anchaunhut.Controller.UIServiceController;
 @WebServlet("/loginPage")
 public class loginPage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
 	UIServiceController uiServiceController = new UIServiceController();
-    public loginPage() {
-        super();
-    }
 
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		PrintWriter out = response.getWriter();
-
-		uiServiceController.loginPage(out);
-		
-		out.println("\r\n" + 
-				"   <div class=\"signin\"> \r\n" + 
-				"\r\n" + 
-				"    <div class=\"content\"> \r\n" + 
-				"\r\n" + 
-				"     <h2>Sign In</h2> \r\n" + 
-				"\r\n" + 
-				"     <div class=\"form\"><form action=\"handle_Login\"> \r\n" + 
-				
-				"\r\n" + 
-				"      <div class=\"inputBox\"> \r\n" + 
-				"\r\n" + 
-				"       <input type=\"text\" name=\"userName\" required> <i>Username</i> \r\n" + 
-				"\r\n" + 
-				"      </div><br> \r\n" + 
-				"\r\n" + 
-				"      <div class=\"inputBox\"> \r\n" + 
-				"\r\n" + 
-				"       <input type=\"password\" name=\"passWord\" required> <i>Password</i> \r\n" + 
-				"\r\n" + 
-				"      </div><br> \r\n" + 
-				"\r\n" + 
-				"      <div class=\"links\"> <a href=\"#\">Forgot Password</a> <a href=\"#\">Signup</a> \r\n" + 
-				"\r\n" + 
-				"      </div><br> \r\n" + 
-				"\r\n" + 
-				"      <div class=\"inputBox\"> \r\n" + 
-				"\r\n" + 
-				"       <input type=\"submit\" value=\"Login\"> \r\n" + 
-				"\r\n" + 
-				"      </div></form> \r\n" + 
-				"\r\n" + 
-				"     </div> \r\n" + 
-				"\r\n" + 
-				"    </div> \r\n" + 
-				"\r\n" + 
-				"   </div> \r\n" + 
-				"\r\n" + 
-				"  </section> <!-- partial --> \r\n" + 
-				"\r\n" + 
-				" </body>\r\n" + 
-				"\r\n" + 
-				"</html>");
-		
-		uiServiceController.cssLogin(out);
+	public loginPage() {
+		super();
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		PrintWriter out = response.getWriter();
+		out.println("<html><head><title>Login Page</title></head><body>");
+
+//		uiServiceController.loginPage(out);
+
+		String createUser = request.getParameter("createUser");
+		String loginFail = request.getParameter("loginFail");
+
+		out.println("<form action=\"handle_Login\" method=\"post\">");
+		out.println("    <label for=\"username\">Username:</label><br>");
+		out.println("    <input type=\"text\" id=\"username\" name=\"userName\" required><br><br>");
+		out.println("    <label for=\"password\">Password:</label><br>");
+		out.println("    <input type=\"password\" id=\"password\" name=\"passWord\" required><br><br>");
+		out.println("    <input type=\"submit\" value=\"Login\">");
+		out.println("	 <a href=\"/UI_Quiz/signUpUser\">Signup</a>");
+		out.println("</form>");
+
+		if (createUser != null) {
+			if (createUser.compareTo("success") == 0) {
+				out.println("Create User SUCCESS");
+			}
+		}
+		if (loginFail != null) {
+			if (loginFail.compareTo("oke") == 0) {
+				out.println("<p> Wrong userName or passWord </p>");
+			}
+		}
+
+
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}

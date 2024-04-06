@@ -2,11 +2,14 @@ package ctu.cit.anchaunhut.Handle;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.net.URI;
 import java.util.Map;
 
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -101,22 +104,36 @@ public class handle_Login extends HttpServlet {
 
 		// Read the response body
 		String jsonResponse = response.readEntity(String.class);
-		out.println(jsonResponse);
 		// Close the response
 		response.close();
 		
 		if(jsonResponse.compareTo("adminLogin") == 0) {
 			responseMain.sendRedirect("/UI_Quiz/DashBoard_Admin");
-
-		}
-		// == 1 mean login SUCCESS, login success return User Obj
-		if(jsonResponse.compareTo("loginFail") != 0) {
+		} else if(jsonResponse.compareTo("LoginFail") != 0) {
+			
 			System.out.println("Login SUCCESS");
+			
 			HttpSession session = request.getSession();
 			session.setAttribute("userName", userName);
+			
+			JsonReader jsonReader = Json.createReader(new StringReader(jsonResponse));
+			JsonObject userObject = jsonReader.readObject();	
+			
+			// Get user ID
+			session.setAttribute("user_id", userObject.getString("user_id"));
+			session.setAttribute("user_name", userObject.getString("userName"));
+			session.setAttribute("email", userObject.getString("email"));
+
+			out.println("user_id: " + userObject.getString("user_id"));
+			out.println("user_name: " + userObject.getString("userName"));
+			out.println("email: " + userObject.getString("email"));
+			
 			responseMain.sendRedirect("/UI_Quiz/homePage");
+		} else if(jsonResponse.compareTo("LoginFail") == 0) {
+			responseMain.sendRedirect("/UI_Quiz/loginPage?loginFail=oke");
 		}
-		out.println("toi day");
+		// == 1 mean login SUCCESS, login success return User Obj
+		
 
 	}
 }
