@@ -28,56 +28,60 @@ public class QuestionsService {
 
 	public String addQuestion(Questions question) throws ClassNotFoundException {
 
-	    String sql = "INSERT INTO Questions (question_text, quiz_id) VALUES (?, ?)";
+		String sql = "INSERT INTO Questions (question_text, quiz_id) VALUES (?, ?)";
 
-	    Connection connection = null;
-	    PreparedStatement preparedStatement = null;
-	    ResultSet generatedKeys = null;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet generatedKeys = null;
 
-	    try {
-	        connection = db.getConnection();
-	        preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-	        preparedStatement.setString(1, question.getQuestion_text());
-	        preparedStatement.setString(2, question.getQuiz_id());
-	        int rowsInserted = preparedStatement.executeUpdate();
+		try {
+			connection = db.getConnection();
+			preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setString(1, question.getQuestion_text());
+			preparedStatement.setString(2, question.getQuiz_id());
+			int rowsInserted = preparedStatement.executeUpdate();
 
-	        if (rowsInserted > 0) {
-	            generatedKeys = preparedStatement.getGeneratedKeys();
-	            if (generatedKeys.next()) {
-	                int newQuestionId = generatedKeys.getInt(1);
-	                connection.close();
-	                return newQuestionId+"";
-	            } else {
-	                return "Failed to retrieve the ID of the new QUESTION.";
-	            }
-	        } else {
-	            return "Failed to add new QUESTION.";
-	        }
-	    } catch (SQLException e) {
-	        return "PreparedStatement QUESTION not work !!! : " + e;
-	    } finally {
-	        if (generatedKeys != null) {
-	            try {
-	                generatedKeys.close();
-	            } catch (SQLException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	        if (preparedStatement != null) {
-	            try {
-	                preparedStatement.close();
-	            } catch (SQLException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	        if (connection != null) {
-	            try {
-	                connection.close();
-	            } catch (SQLException e) {
-	                e.printStackTrace();
-	            }
-	        }
-	    }
+			if (rowsInserted > 0) {
+
+				// Get ID of new Question by PreparedStatement
+				generatedKeys = preparedStatement.getGeneratedKeys();
+				if (generatedKeys.next()) {
+					int newQuestionId = generatedKeys.getInt(1);
+					connection.close();
+
+					// Add new SUCCESS - Return Question_id
+					return newQuestionId + "";
+				} else {
+					return "addQuestion - Failed to retrieve the ID of the new QUESTION.";
+				}
+			} else {
+				return "addQuestion - Failed to add new QUESTION.";
+			}
+		} catch (SQLException e) {
+			return "addQuestion - PreparedStatement QUESTION not work !!! : " + e;
+		} finally {
+			if (generatedKeys != null) {
+				try {
+					generatedKeys.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (preparedStatement != null) {
+				try {
+					preparedStatement.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	public String readQuestion(String question_id) throws ClassNotFoundException, SQLException {
@@ -99,7 +103,7 @@ public class QuestionsService {
 			}
 
 		} catch (Exception e) {
-			System.out.println("Resultset Don't work !!! :" + e);
+			System.out.println("readQuestion - Resultset Don't work !!! :" + e);
 		}
 		connection.close();
 
@@ -107,27 +111,11 @@ public class QuestionsService {
 
 	}
 
-	public String updateQuestion(Questions question) throws SQLException {
-		String sql = "UPDATE Questions SET quiz_id = ?, question_text = ? WHERE question_id = ?";
-		Connection connection = null;
-		try {
-			connection = db.getConnection();
-		} catch (ClassNotFoundException e) {
-			System.out.println("Can't create connection to db in \"updateQuestion\" + : " + e);
-		}
-		try (PreparedStatement statement = connection.prepareStatement(sql)) {
-			statement.setString(1, question.getQuiz_id());
-			statement.setString(2, question.getQuestion_text());
-			statement.setString(3, question.getQuestion_id());
-
-			statement.executeUpdate();
-		}
-		return "update \"QUESTION\" success ";
-	}
-
+	// Delete All Option First ( Don't call Option Service )
+	// Then delete Question by question_id
 	public String deleteQuestion(String question_id) {
-		
-		if(question_id.compareTo("")==0) {
+
+		if (question_id.compareTo("") == 0) {
 			return "No have question_id";
 		}
 		String sql = "DELETE FROM Questions WHERE question_id = ?";
@@ -149,9 +137,9 @@ public class QuestionsService {
 			statement.executeUpdate();
 
 		} catch (ClassNotFoundException e) {
-			return "Can't create connection to db in \"deleteQuestion\"";
+			return "deleteQuestion -Can't create connection to db in \"deleteQuestion\"";
 		} catch (SQLException e) {
-			return "PreparedStatement in deleteQuestion not work !!! : " + e;
+			return "deleteQuestion - PreparedStatement in deleteQuestion not work !!! : " + e;
 
 		}
 
@@ -196,11 +184,10 @@ public class QuestionsService {
 
 		return response;
 	}
-	
-	public String list_All_Question_With_QuizID(String quiz_id) throws SQLException, ClassNotFoundException{
-		
+
+	public String readAllQuestionsWithQuizId(String quiz_id) throws SQLException, ClassNotFoundException {
+
 		List<String> listQuestion = new ArrayList<>();
-		
 
 		String sql = "SELECT * FROM Questions WHERE quiz_id = ?";
 
@@ -209,7 +196,7 @@ public class QuestionsService {
 		PreparedStatement statement = connection.prepareStatement(sql);
 
 		statement.setString(1, quiz_id);
-		
+
 		try (ResultSet resultSet = statement.executeQuery()) {
 			while (resultSet.next()) {
 				listQuestion.add(this.readQuestion(resultSet.getString("question_id")));
@@ -218,8 +205,8 @@ public class QuestionsService {
 		} catch (Exception e) {
 			System.out.println("Resultset Don't work !!! :" + e);
 		}
-		connection.close(); 
-		
+		connection.close();
+
 		return listQuestion.toString();
 	}
 
@@ -227,7 +214,7 @@ public class QuestionsService {
 	public String checkCorrectQuestion(String question_id, String Uanswer) throws ClassNotFoundException, SQLException {
 
 		String dataQuestion = readQuestion(question_id);
-		
+
 		// Create a StringReader object
 		StringReader stringReader = new StringReader(dataQuestion);
 
@@ -236,19 +223,20 @@ public class QuestionsService {
 
 		// Get Question OBJ from JsonReader
 		JsonObject jsonQuestion = jsonReader.readObject();
-		
-		// Get Options data - contatin array of multiple option		
+
+		// Get Options data - contatin array of multiple option
 		JsonArray jsonOptions = jsonQuestion.getJsonArray("options");
-		
+
 		// Loop each option.
-		for(int i = 0; i < jsonOptions.size(); i++) {
-			
+		for (int i = 0; i < jsonOptions.size(); i++) {
+
 			// Get option
 			JsonObject jsonOption = jsonOptions.getJsonObject(i);
-			
-		// Check if option is_correct = true, continue check if "User Answer" = this option => Return True
-			if(jsonOption.getBoolean("is_correct") == true) {
-				if(jsonOption.getString("option_id").compareTo(Uanswer) == 0) {
+
+			// Check if option is_correct = true, continue check if "User Answer" = this
+			// option => Return True
+			if (jsonOption.getBoolean("is_correct") == true) {
+				if (jsonOption.getString("option_id").compareTo(Uanswer) == 0) {
 					return "true";
 				}
 			}

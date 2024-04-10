@@ -3,8 +3,6 @@ package ctu.cit.anchaunhut.Handle;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import javax.json.Json;
@@ -42,7 +40,6 @@ public class handle_addNewQuiz extends HttpServlet {
 			throws ServletException, IOException {
 
 		Map<String, String[]> parameterMap = request.getParameterMap();
-		List<String> option_text = null;
 
 		out = response.getWriter();
 
@@ -56,7 +53,6 @@ public class handle_addNewQuiz extends HttpServlet {
 			out.println("handle_addNewQuiz - Insert Quiz error : " + e);
 		}
 
-
 		response.sendRedirect("/UI_Quiz/DashBoard_Admin");
 
 	}
@@ -66,9 +62,8 @@ public class handle_addNewQuiz extends HttpServlet {
 		doGet(request, response);
 	}
 
-
 	private void getInformation(Map<String, String[]> parameterMap) {
-		
+
 		for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
 
 			String parameterName = entry.getKey();
@@ -89,7 +84,7 @@ public class handle_addNewQuiz extends HttpServlet {
 					quiz_title = paramValue;
 				} else if (checkquiz_description == 1) {
 					quiz_description = paramValue;
-				} else{
+				} else {
 					creator_id = paramValue;
 				}
 			}
@@ -98,7 +93,7 @@ public class handle_addNewQuiz extends HttpServlet {
 	}
 
 	private void addNewQuiz() {
-		if(quiz_title != "" && quiz_description != "" && creator_id != "") {
+		if (quiz_title != "" && quiz_description != "" && creator_id != "") {
 			ClientConfig config = new ClientConfig();
 			Client client = ClientBuilder.newClient(config);
 
@@ -107,22 +102,14 @@ public class handle_addNewQuiz extends HttpServlet {
 			WebTarget target = client.target(uri);
 
 			// Create a JSON object representing your request data
-			JsonObject requestData = Json.createObjectBuilder()
-					.add("quiz_title", quiz_title)
-					.add("quiz_description", quiz_description)
-					.add("creator_id", creator_id)
-					.build();
+			JsonObject requestData = Json.createObjectBuilder().add("quiz_title", quiz_title)
+					.add("quiz_description", quiz_description).add("creator_id", creator_id).build();
 
 			// Send a POST request with the JSON data
 			Response response = target.request(MediaType.APPLICATION_JSON).post(Entity.json(requestData));
 
-			// Read the response body
-			String jsonResponse = response.readEntity(String.class);
-
 			// Close the response
 			response.close();
-			
-//			out.println(jsonResponse);
 		}
 	}
 }

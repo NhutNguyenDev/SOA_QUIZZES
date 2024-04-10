@@ -20,7 +20,7 @@ public class QuizService {
 
 	private static db db = new db();
 
-	public String addQuiz(Quiz quiz) throws ClassNotFoundException {
+	public String addNewQuiz(Quiz quiz) throws ClassNotFoundException {
 
 		String sql = "INSERT INTO Quizzes (quiz_title, quiz_description, creator_id) VALUES (?, ?, ?)";
 
@@ -102,28 +102,31 @@ public class QuizService {
 		return listQuiz.toString();
 
 	}
-	public String updateQuiz(Quiz quiz) throws SQLException, ClassNotFoundException {
+//	public String updateQuiz(Quiz quiz) throws SQLException, ClassNotFoundException {
+//
+//		String sql = "UPDATE Quizzes SET quiz_title = ?, quiz_description = ? WHERE quiz_id = ?";
+//
+//		Connection connection = db.getConnection();
+//		PreparedStatement statement = connection.prepareStatement(sql);
+//
+//		try {
+//
+//			connection = db.getConnection();
+//
+//			statement.setString(1, quiz.getQuiz_title());
+//			statement.setString(2, quiz.getQuiz_description());
+//			statement.setString(3, quiz.getQuiz_id());
+//
+//			statement.executeUpdate();
+//		} catch (ClassNotFoundException e) {
+//			System.out.println("Can't create connection to db in \"updateQUIZ \" + : " + e);
+//		}
+//		return "update \"QUIZ\" success ";
+//	}
 
-		String sql = "UPDATE Quizzes SET quiz_title = ?, quiz_description = ? WHERE quiz_id = ?";
-
-		Connection connection = db.getConnection();
-		PreparedStatement statement = connection.prepareStatement(sql);
-
-		try {
-
-			connection = db.getConnection();
-
-			statement.setString(1, quiz.getQuiz_title());
-			statement.setString(2, quiz.getQuiz_description());
-			statement.setString(3, quiz.getQuiz_id());
-
-			statement.executeUpdate();
-		} catch (ClassNotFoundException e) {
-			System.out.println("Can't create connection to db in \"updateQUIZ \" + : " + e);
-		}
-		return "update \"QUIZ\" success ";
-	}
-
+	
+	// Call Service Question - delete_All_Question_With_QuizID() first
+	// Then Delete Quiz
 	public String deleteQuiz(String quiz_id) {
 
 

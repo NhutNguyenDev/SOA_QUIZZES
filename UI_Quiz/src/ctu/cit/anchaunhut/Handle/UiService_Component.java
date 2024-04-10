@@ -128,7 +128,7 @@ public class UiService_Component {
 			String quiz_id = quizObj.getString("quiz_id");
 			String quiz_title = quizObj.getString("quiz_title");
 			String quiz_description = quizObj.getString("quiz_description");
-			String creator_id = quizObj.getString("creator_id");
+//			String creator_id = quizObj.getString("creator_id");
 			String created_at = quizObj.getString("created_at");
 
 			//// Start <div> contain each Quiz
@@ -370,9 +370,9 @@ public class UiService_Component {
 
 		JsonObject jsonQuestion = jsonReader.readObject();
 
-		String question_id = jsonQuestion.getString("question_id");
+//		String question_id = jsonQuestion.getString("question_id");
 		String question_text = jsonQuestion.getString("question_text");
-		String quiz_id = jsonQuestion.getString("quiz_id");
+//		String quiz_id = jsonQuestion.getString("quiz_id");
 
 		if (is_correct) {
 			out.println("<h4 style=\"background-color: lawngreen;width: fit-content;\">question_text:" + question_text + "</h4>");
@@ -408,8 +408,7 @@ public class UiService_Component {
 					out.println("<p style=\"width: fit-content;\">option_text:" + option_text + "</p>");
 				}
 			}
-//			out.println("<p>option_id:" + option_id + "</p>");
-//			out.println("<p>is_correct:" + is_correct + "</p>");
+
 		}
 
 	}
@@ -419,22 +418,16 @@ public class UiService_Component {
 		JsonReader jsonReader = Json.createReader(new StringReader(jsonData));
 		JsonArray sessionsArray = jsonReader.readArray();
 
-		int numberId = 1;
 		for (int i = 0; i < sessionsArray.size(); i++) {
 			JsonObject sessionObj = sessionsArray.getJsonObject(i);
 
 			String sessionId = sessionObj.getString("session_id");
-			String userId = sessionObj.getString("user_id");
-			String quizId = sessionObj.getString("quiz_id");
-			String startDate = sessionObj.getString("start_date");
-			String endDate = sessionObj.getString("end_date");
 
-			String idContent = "content" + numberId++;
+			String startDate = sessionObj.getString("start_date");
 			
 			// Div contains all Element of SESSION
 			out.println("<div class=\"collapsible\" onclick=\"toggleContent('" + sessionId + "')\">");
-//			out.println("<h3>Session ID: " + sessionId + "User ID: " + userId + "Quiz ID: " + quizId + "Start Date: "
-//					+ startDate + "End Date: " + endDate + "</h3><br>");
+
 			out.println("Make test: " + startDate);
 			
 			// CODE HERE - GET_SCORE
@@ -452,7 +445,7 @@ public class UiService_Component {
 			for (int j = 0; j < answersArray.size(); j++) {
 				JsonObject answerObj = answersArray.getJsonObject(j);
 
-				String answerId = answerObj.getString("answer_id");
+//				String answerId = answerObj.getString("answer_id");
 				String questionId = answerObj.getString("question_id");
 				String userAnswer = answerObj.getString("user_answer");
 				boolean isCorrect = answerObj.getBoolean("is_correct");
@@ -487,7 +480,82 @@ public class UiService_Component {
 		return response;
 	}
 	
+	public void cssLoginPage(PrintWriter out) {
+
+		out.println("<style>");
+		out.println("/* General styling for the HTML page */\r\n" + 
+				"body {\r\n" + 
+				"    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\r\n" + 
+				"    background-color: #000;\r\n" + 
+				"    color: #fff;\r\n" + 
+				"    margin: 0;\r\n" + 
+				"    padding: 0;\r\n" + 
+				"}\r\n" + 
+				"\r\n" + 
+				".container {\r\n" + 
+				"    max-width: 400px;\r\n" + 
+				"    margin: 50px auto;\r\n" + 
+				"    background-color: #222;\r\n" + 
+				"    padding: 20px;\r\n" + 
+				"    border-radius: 8px;\r\n" + 
+				"    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);\r\n" + 
+				"}\r\n" + 
+				"\r\n" + 
+				"h2 {\r\n" + 
+				"    text-align: center;\r\n" + 
+				"    color: #00ffea;\r\n" + 
+				"}\r\n" + 
+				"\r\n" + 
+				"form {\r\n" + 
+				"    margin-top: 20px;\r\n" + 
+				"}\r\n" + 
+				"\r\n" + 
+				"label {\r\n" + 
+				"    display: block;\r\n" + 
+				"    margin-bottom: 5px;\r\n" + 
+				"    color: #aaa;\r\n" + 
+				"}\r\n" + 
+				"\r\n" + 
+				"input[type=\"text\"],\r\n" + 
+				"input[type=\"password\"] {\r\n" + 
+				"    width: 100%;\r\n" + 
+				"    padding: 10px;\r\n" + 
+				"    margin-bottom: 10px;\r\n" + 
+				"    border: 1px solid #333;\r\n" + 
+				"    border-radius: 5px;\r\n" + 
+				"    background-color: #333;\r\n" + 
+				"    color: #fff;\r\n" + 
+				"}\r\n" + 
+				"\r\n" + 
+				"input[type=\"submit\"] {\r\n" + 
+				"    width: 100%;\r\n" + 
+				"    padding: 10px;\r\n" + 
+				"    border: none;\r\n" + 
+				"    border-radius: 5px;\r\n" + 
+				"    background-color: #00ffea;\r\n" + 
+				"    color: #000;\r\n" + 
+				"    cursor: pointer;\r\n" + 
+				"}\r\n" + 
+				"\r\n" + 
+				"input[type=\"submit\"]:hover {\r\n" + 
+				"    background-color: #00d4bd;\r\n" + 
+				"}\r\n" + 
+				"\r\n" + 
+				"a {\r\n" + 
+				"    display: block;\r\n" + 
+				"    text-align: center;\r\n" + 
+				"    color: #00ffea;\r\n" + 
+				"    text-decoration: none;\r\n" + 
+				"}\r\n" + 
+				"\r\n" + 
+				"a:hover {\r\n" + 
+				"    text-decoration: underline;\r\n" + 
+				"}\r\n" + 
+				"");
+		out.println("</style>");
+	}
 	public void cssHomePage(PrintWriter out) {
+		
 		out.println("<script>");
 		out.println("	    function hideScore_show() {\r\n" + 
 				"	        var infoBox = document.getElementById(\"score_show\");\r\n" + 

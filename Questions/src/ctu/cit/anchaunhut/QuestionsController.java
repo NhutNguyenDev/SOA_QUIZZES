@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -26,6 +25,7 @@ public class QuestionsController {
         return questionsService.addQuestion(question);
 	}
 	
+	// Read 1 Question by question_id
 	@GET
 	@Path("/read")
 	@Consumes(MediaType.APPLICATION_XML)
@@ -36,26 +36,17 @@ public class QuestionsController {
 
 	}
 	
-////	Return List of Questions by Quiz_id is parameter
+	//	Return List Questions of Quiz_id
 	@GET
 	@Path("/readAll")
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String readAllQuestionsWithQuizId(@QueryParam("quiz_id") String quiz_id) throws ClassNotFoundException, SQLException {  
         
-        return questionsService.list_All_Question_With_QuizID(quiz_id);
+        return questionsService.readAllQuestionsWithQuizId(quiz_id);
 
 	}
 	
-	
-	@PUT
-	@Path("/update")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public String updateQuestion(Questions questions) throws ClassNotFoundException, SQLException {  
-        
-        return questionsService.updateQuestion(questions);
-	}
 	
 	@POST
 	@Path("/delete")

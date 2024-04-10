@@ -135,24 +135,24 @@ public class OptionsService {
 		return jsonBuilder.toString();
 	}
 
-	public String updateOption(Options option) throws SQLException {
-		String sql = "UPDATE Options SET question_id = ?, option_text = ?, option_image = ?, is_correct = ? WHERE option_id = ?";
-		Connection connection = null;
-		try {
-			connection = db.getConnection();
-		} catch (ClassNotFoundException e) {
-			System.out.println("Can't create connection to db in \"OPTIONSERVICE\"");
-		}
-		try (PreparedStatement statement = connection.prepareStatement(sql)) {
-			statement.setString(1, option.getQuestion_id());
-			statement.setString(2, option.getOption_text());
-			statement.setString(3, option.getOption_image());
-			statement.setBoolean(4, option.isIs_correct());
-			statement.setString(5, option.getOption_id());
-			statement.executeUpdate();
-		}
-		return "update \"OPTION\" success ";
-	}
+//	public String updateOption(Options option) throws SQLException {
+//		String sql = "UPDATE Options SET question_id = ?, option_text = ?, option_image = ?, is_correct = ? WHERE option_id = ?";
+//		Connection connection = null;
+//		try {
+//			connection = db.getConnection();
+//		} catch (ClassNotFoundException e) {
+//			System.out.println("Can't create connection to db in \"OPTIONSERVICE\"");
+//		}
+//		try (PreparedStatement statement = connection.prepareStatement(sql)) {
+//			statement.setString(1, option.getQuestion_id());
+//			statement.setString(2, option.getOption_text());
+//			statement.setString(3, option.getOption_image());
+//			statement.setBoolean(4, option.isIs_correct());
+//			statement.setString(5, option.getOption_id());
+//			statement.executeUpdate();
+//		}
+//		return "update \"OPTION\" success ";
+//	}
 
 	public String deleteOption(String option_id) {
 		String sql = "DELETE FROM Options WHERE option_id = ?";

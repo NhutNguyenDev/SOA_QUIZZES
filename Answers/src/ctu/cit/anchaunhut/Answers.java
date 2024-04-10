@@ -1,11 +1,13 @@
 package ctu.cit.anchaunhut;
 
 public class Answers {
+	
 	private String answer_id;
 	private String session_id;
     private String question_id;
     private String user_answer;
     private Boolean is_correct;
+    
 	public String getAnswer_id() {
 		return answer_id;
 	}
@@ -41,9 +43,5 @@ public class Answers {
 		return "{\"answer_id\":\"" + answer_id + "\", \"session_id\":\"" + session_id + "\", \"question_id\":\"" + question_id
 				+ "\", \"user_answer\":\"" + user_answer + "\", \"is_correct\":" + is_correct + "}";
 	}
-    
-	
-    
-    
-    
+   
 }

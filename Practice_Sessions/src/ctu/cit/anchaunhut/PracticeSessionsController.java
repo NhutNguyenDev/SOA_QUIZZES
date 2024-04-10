@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -25,6 +24,7 @@ public class PracticeSessionsController {
 		return practiceSessionsService.addNewPracticeSessions(practiceSessions);
 	}
 
+	// Return 1 session by session_id
 	@GET
 	@Path("/read")
 	@Consumes(MediaType.APPLICATION_XML)
@@ -35,18 +35,17 @@ public class PracticeSessionsController {
 		return practiceSessionsService.readPracticeSessions(session_id);
 
 	}
+	
 	@GET
 	@Path("/readScore")
 	@Consumes(MediaType.APPLICATION_XML)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String readPracticeSessionsScore(@QueryParam("session_id") String session_id)
 			throws ClassNotFoundException, SQLException {
-
 		return practiceSessionsService.readPracticeSessionsScore(session_id);
-
 	}
 
-////	Return List of Sessions by Quiz_id + User_id is parameter
+	//	Return List of Sessions + Answer by Quiz_id + User_id is parameter
 	@GET
 	@Path("/readAll")
 	@Consumes(MediaType.APPLICATION_XML)
@@ -57,40 +56,5 @@ public class PracticeSessionsController {
 
 	}
 
-//	@PUT
-//	@Path("/update")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public String updateQuestion(PracticeSessions questions) throws ClassNotFoundException, SQLException {  
-//        
-//        return questionsService.updateQuestion(questions);
-//	}
-//	
-//	@POST
-//	@Path("/delete")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public String deleteQuestion(@QueryParam("question_id") String question_id) throws ClassNotFoundException, SQLException {  
-//        
-//        return questionsService.deleteQuestion(question_id);
-//	}
-//	
-	@GET
-	@Path("/deleteWithQuizId")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public String delet_All_Question_With_QuizID(@QueryParam("quiz_id") String quiz_id) throws ClassNotFoundException, SQLException {  
-        
-        return questionsService.delete_All_Question_With_QuizID(quiz_id);
-	}
-//	
-//	@GET
-//	@Path("/checkCorrect")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public String checkCorrectQuestion(@QueryParam("question_id") String question_id, @QueryParam("Uanswer") String Uanswer) throws ClassNotFoundException, SQLException {  
-//        
-//        return questionsService.checkCorrectQuestion(question_id,Uanswer);
-//	}
 
 }

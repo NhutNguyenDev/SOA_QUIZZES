@@ -7,7 +7,6 @@ import java.net.URI;
 import java.util.Map;
 
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.servlet.ServletException;
@@ -50,7 +49,7 @@ public class handle_Login extends HttpServlet {
 		
 		System.out.println("HANDLE-LOGIN: User: " + userName + " - Password: " + passWord + " try to Login !!!");
 		
-		// Call API Check Authentication
+		// Call API Check Authentication of User
 		this.checkAuthentication(request, response);
 		
 
@@ -64,7 +63,6 @@ public class handle_Login extends HttpServlet {
 	// Get value of userName and passWord by parameter send by USERs
 	private void getInformation(Map<String, String[]> parameterMap) {
 		for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
-
 			String parameterName = entry.getKey();
 			int checkUserName = 0;
 
@@ -96,17 +94,15 @@ public class handle_Login extends HttpServlet {
 
 		WebTarget target = client.target(uri);
 
-		// Create a JSON object representing your request data
 		JsonObject requestData = Json.createObjectBuilder().add("userName", userName).add("passWord", passWord).build();
 
-		// Send a POST request with the JSON data
 		Response response = target.request(MediaType.APPLICATION_JSON).post(Entity.json(requestData));
 
 		// Read the response body
 		String jsonResponse = response.readEntity(String.class);
-		// Close the response
 		response.close();
 		
+		// SendRedirect to Admin Page if jsonResponse is "adminLogin"
 		if(jsonResponse.compareTo("adminLogin") == 0) {
 			responseMain.sendRedirect("/UI_Quiz/DashBoard_Admin");
 		} else if(jsonResponse.compareTo("LoginFail") != 0) {
@@ -119,14 +115,10 @@ public class handle_Login extends HttpServlet {
 			JsonReader jsonReader = Json.createReader(new StringReader(jsonResponse));
 			JsonObject userObject = jsonReader.readObject();	
 			
-			// Get user ID
+			// Get user ID, set SESSION
 			session.setAttribute("user_id", userObject.getString("user_id"));
 			session.setAttribute("user_name", userObject.getString("userName"));
 			session.setAttribute("email", userObject.getString("email"));
-
-			out.println("user_id: " + userObject.getString("user_id"));
-			out.println("user_name: " + userObject.getString("userName"));
-			out.println("email: " + userObject.getString("email"));
 			
 			responseMain.sendRedirect("/UI_Quiz/homePage");
 		} else if(jsonResponse.compareTo("LoginFail") == 0) {

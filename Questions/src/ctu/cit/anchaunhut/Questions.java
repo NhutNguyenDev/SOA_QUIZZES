@@ -41,7 +41,6 @@ public class Questions {
 	public String toString() {
 		return "{\"question_id\":" + question_id + ", \"question_text\":" + question_text			
 				+ "}";
-//		 ", \"quiz_id\":" + quiz_id + 		
 	}
 	
 //	This function combine toString of Questions + call API of Options to return List of "Options with parameter is Question_id"
@@ -49,7 +48,6 @@ public class Questions {
 		return "{\"question_id\":\"" + question_id + "\", \"question_text\":\"" + question_text + "\", \"quiz_id\":\"" + quiz_id 
 				+ "\", \"options\":" + QuestionsService.read_All_Option_With_Question_Id(question_id)
 				+ "}";
-//		+ "\", \"quiz_id\":\"" + quiz_id 
 	}
 
     

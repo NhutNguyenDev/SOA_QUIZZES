@@ -47,8 +47,7 @@ public class homePage extends HttpServlet {
 		// Get infor from session
 		String user_id = (String) session.getAttribute("user_id");
 		String user_name = (String) session.getAttribute("user_name");
-		String email = (String) session.getAttribute("email");
-
+		
 		// This print use to test===================================
 		out.println("<h1> USER ID: " + user_id + "</h1>");
 		out.println("<h1> user_name: " + user_name + "</h1>");
@@ -57,12 +56,13 @@ public class homePage extends HttpServlet {
 		out.println("<a href=\"/UI_Quiz/handle_logout\">Logout</a>");
 
 
-		out.println("<html><head><title>Input Numbers</title></head><body>");
+		out.println("<html><head><title>Home Page</title></head><body>");
 
 		out.println("<h1>This is home Page</h1>");
 		
 		out.println("<h1>Choose one Quiz and make exam </h1>");
 		
+		// SERVICE - Get quiz by user_id  - ( Quiz + Session of that Quiz )
 		uiServiceController.getAllQuiz(out, user_id);
 		
 		// Css

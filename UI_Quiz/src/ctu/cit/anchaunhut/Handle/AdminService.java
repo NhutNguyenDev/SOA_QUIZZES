@@ -208,7 +208,6 @@ public class AdminService {
 				JsonObject optionObject = optionArray.getJsonObject(j);
 
 				String option_text = optionObject.getString("option_text");
-//				String option_id = optionObject.getString("option_id");
 				Boolean is_correct = optionObject.getBoolean("is_correct");
 
 				// out.println information of Question
@@ -264,7 +263,7 @@ public class AdminService {
 				+ "        quizFormDiv.style.display = \"block\";\r\n" + "      } else {\r\n"
 				+ "        quizFormDiv.style.display = \"none\";\r\n" + "      }" + "}");
 
-		// Unhide form addNewQuiz
+		// hide and Unhide form addNewQuiz
 		out.println("function addNewQuiz() {\r\n" + "    // Get the div with id \"quizFormDiv\"\r\n"
 				+ "    var quizFormDiv = document.getElementById(\"quizFormDiv\");\r\n" + "\r\n"
 				+ "    // Check if the div is hidden\r\n" + "    if (quizFormDiv.style.display === \"none\") {\r\n"

@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -17,15 +16,15 @@ public class OptionsController {
 	
 	private static OptionsService optionsService = new OptionsService();
 	
+	// Add new 1 Option
 	@POST
 	@Path("/new")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public String addNewOption(Options options) throws ClassNotFoundException {  
-        
         return optionsService.addOption(options);
 	}
-	
+	// Read 1 Option by option_id
 	@GET
 	@Path("/read")
 	@Consumes(MediaType.APPLICATION_XML)
@@ -36,7 +35,7 @@ public class OptionsController {
 
 	}
 	
-//	Return List of Options by Question_id is parameter
+	//	Return List Options by Question_id is parameter
 	@GET
 	@Path("/readAll")
 	@Consumes(MediaType.APPLICATION_XML)
@@ -45,16 +44,6 @@ public class OptionsController {
         
         return optionsService.readAllOptionByQuestionId(options_id);
 
-	}
-	
-	
-	@PUT
-	@Path("/update")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public String updateOption(Options options) throws ClassNotFoundException, SQLException {  
-        
-        return optionsService.updateOption(options);
 	}
 	
 	@POST

@@ -1,20 +1,6 @@
 package ctu.cit.anchaunhut.Controller;
 
 import java.io.PrintWriter;
-import java.io.StringReader;
-import java.net.URI;
-
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.UriBuilder;
-
-import org.glassfish.jersey.client.ClientConfig;
 
 import ctu.cit.anchaunhut.Handle.UiService_Component;
 
@@ -58,7 +44,9 @@ public class UIServiceController {
 		UiService.cssHomePage(out);
 	}
 	
-	
+	public void cssLoginPage(PrintWriter out) {
+		UiService.cssLoginPage(out);
+	}
 	// First HTML of Login Page
 	public void loginPage(PrintWriter out) {
 		UiService.loginPage(out);

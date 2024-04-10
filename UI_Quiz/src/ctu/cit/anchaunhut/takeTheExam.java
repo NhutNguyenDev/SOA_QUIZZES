@@ -2,8 +2,6 @@ package ctu.cit.anchaunhut;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -11,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import ctu.cit.anchaunhut.Controller.UIServiceController;
 
@@ -45,6 +42,7 @@ public class takeTheExam extends HttpServlet {
 			response.sendRedirect("/UI_Quiz/loginPage");
 		}
 
+		// SERVICE - Take the exam - ( Include Quiz_Service + Session Service )
 		UiService.takeTheExam(quiz_id, user_id, out);
 
 //		Import CSS

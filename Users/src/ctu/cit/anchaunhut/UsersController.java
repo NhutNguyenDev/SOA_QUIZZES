@@ -16,6 +16,7 @@ public class UsersController {
 
 	private static UsersService usersService = new UsersService();
 
+	// Add new User
 	@POST
 	@Path("/new")
 	@Consumes(MediaType.APPLICATION_JSON)

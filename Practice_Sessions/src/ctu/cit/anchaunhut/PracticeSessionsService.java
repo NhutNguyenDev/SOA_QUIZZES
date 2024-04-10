@@ -16,7 +16,6 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import javax.json.JsonStructure;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -98,9 +97,8 @@ public class PracticeSessionsService {
 			System.out.println("Resultset Don't work !!! :" + e);
 		}
 		connection.close();
+		// Adding Answer in PracticeSession Schema
 		return practiceSessions.readWithAnswer(session_id);
-//		return practiceSessions.readWithOptions(session_id);
-
 	}
 
 	public String readPracticeSessionsScore(String session_id) throws ClassNotFoundException, SQLException {
@@ -125,22 +123,6 @@ public class PracticeSessionsService {
 		return  score+ "/" + numberAnswer;
 		
 	}
-	// This function support readWithAnswer() in PracticeSession - purpose return
-	// String Json data of all Answer with Session_id is parameter
-	public static String read_All_Answers_With_SessionId(String session_id) {
-		ClientConfig config = new ClientConfig();
-		Client client = ClientBuilder.newClient(config);
- 
-		URI uri = UriBuilder.fromUri("http://localhost:8080/Answers/api/answers/readAll").build();
-
-		WebTarget target = client.target(uri);
-
-		String response = target.queryParam("session_id", session_id).request().accept(MediaType.APPLICATION_JSON)
-				.get(String.class);
-
-		return response;
-	}
-
 
 
 	public String readAllSessionByUserIdvsQuizId(String quiz_id, String user_id) throws SQLException, ClassNotFoundException {
@@ -173,4 +155,19 @@ public class PracticeSessionsService {
 		return listPracticeSession.toString();
 	}
 
+		// This function support readWithAnswer() in PracticeSession schema + readPracticeSessionsScore() in PracticeSessionsService
+		// Get All Answer of session_id ( JSON data type )
+	public static String read_All_Answers_With_SessionId(String session_id) {
+		ClientConfig config = new ClientConfig();
+		Client client = ClientBuilder.newClient(config);
+ 
+		URI uri = UriBuilder.fromUri("http://localhost:8080/Answers/api/answers/readAll").build();
+
+		WebTarget target = client.target(uri);
+
+		String response = target.queryParam("session_id", session_id).request().accept(MediaType.APPLICATION_JSON)
+				.get(String.class);
+
+		return response;
+	}
 }

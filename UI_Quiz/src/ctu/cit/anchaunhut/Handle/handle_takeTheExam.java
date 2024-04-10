@@ -54,7 +54,6 @@ public class handle_takeTheExam extends HttpServlet {
 				if (parameterName.compareTo("user_id") == 0) {
 					user_id = paramValue;
 				} else if (parameterName.compareTo("quiz_id") == 0) {
-
 					quiz_id = paramValue;
 					// Get Question and User_Answer + Check correct
 				} else if (parameterName.compareTo("session_id") == 0) {
@@ -75,12 +74,10 @@ public class handle_takeTheExam extends HttpServlet {
 					if (checkCorrectAnser(question_id, userAnswer).compareTo("true") == 0) {
 						countCorrect++;
 						// Add new Answer with each question ( TRUE answer )
-//						out.println(addAnswer(session_id, question_id, userAnswer, "true"));
 						addAnswer(session_id, question_id, userAnswer, "true");
 					} else {
 						// Add new Answer with each question ( FALSE answer )
 						addAnswer(session_id, question_id, userAnswer, "false");
-//						out.println(addAnswer(session_id, question_id, userAnswer, "false"));
 					}
 				}
 			}
@@ -96,8 +93,6 @@ public class handle_takeTheExam extends HttpServlet {
 		
 		response.sendRedirect("/UI_Quiz/homePage");
 
-		
-		
 
 	}
 
@@ -137,7 +132,7 @@ public class handle_takeTheExam extends HttpServlet {
 		Response response = target.request(MediaType.APPLICATION_JSON).post(Entity.json(requestData));
 
 		// Read the response body
-		String jsonResponse = response.readEntity(String.class);
+//		String jsonResponse = response.readEntity(String.class);
 
 		// Close the response
 		response.close();

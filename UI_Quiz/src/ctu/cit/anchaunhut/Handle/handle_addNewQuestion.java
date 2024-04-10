@@ -2,22 +2,18 @@ package ctu.cit.anchaunhut.Handle;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.StringReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonObject;
-import javax.json.JsonReader;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -117,12 +113,6 @@ public class handle_addNewQuestion extends HttpServlet {
 		out.println("handle_addNewQuestion.addNewQuestion  ===> Add new Question success - " + question_text);
 		return jsonResponse;
 
-//		if(jsonResponse.compareTo("loginFail") == 1) {
-//			System.out.println("Login SUCCESS");
-//			HttpSession session = request.getSession();
-//			session.setAttribute("userName", userName);
-////			session.setAttribute("param2", value2);
-//		}
 	}
 
 	private void addNewOption(String option_text, Boolean isCorrect) {
@@ -148,7 +138,7 @@ public class handle_addNewQuestion extends HttpServlet {
 
 		}
 		// Read the response body
-		String jsonResponse = response.readEntity(String.class);
+//		String jsonResponse = response.readEntity(String.class);
 
 		// Close the response
 		response.close();
@@ -164,8 +154,6 @@ public class handle_addNewQuestion extends HttpServlet {
 
 			String parameterName = entry.getKey();
 
-//			out.println("Other paraName: " + parameterName);
-//	    	ParamValue must be String[], it can have OBJ inside
 			String[] paramValues = entry.getValue();
 
 			for (String paramValue : paramValues) {

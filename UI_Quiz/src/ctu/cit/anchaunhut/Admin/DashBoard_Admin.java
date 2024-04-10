@@ -2,38 +2,21 @@ package ctu.cit.anchaunhut.Admin;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URI;
-import java.util.Map;
 
-import javax.json.Json;
-import javax.json.JsonObject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
-
-import org.glassfish.jersey.client.ClientConfig;
 
 import ctu.cit.anchaunhut.Controller.AdminController;
-import ctu.cit.anchaunhut.Controller.UIServiceController;
-import ctu.cit.anchaunhut.Handle.AdminService;
 
 @WebServlet("/DashBoard_Admin")
 public class DashBoard_Admin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	UIServiceController UiService = new UIServiceController();
 	AdminController adminController = new AdminController();
 	PrintWriter out = null;
-
 
 
 	public DashBoard_Admin() {
@@ -46,14 +29,11 @@ public class DashBoard_Admin extends HttpServlet {
 
 		
 		out = response.getWriter();
-//		Map<String, String[]> parameterMap = request.getParameterMap();
 
 		PrintWriter out = response.getWriter();
 
-		// Get value of new Quiz
-//		this.getInformation(parameterMap);
-
 		out.println("<h1> Admin DashBoard </h1>");
+		out.println("<a href=\"/UI_Quiz/handle_logout\">Logout</a>");
 
 		out.println("<a class=\"button\" onclick=\"addNewQuiz()\">Add New Quiz</a><br>");
 		
@@ -63,6 +43,7 @@ public class DashBoard_Admin extends HttpServlet {
 		formAddNewQuiz();
 
 		// Read all Quiz - each quiz have it own box.
+		// SERVICE - Include Quiz 
 		adminController.readAllQuiz(out);
 
 //		Import CSS + JS
@@ -74,7 +55,6 @@ public class DashBoard_Admin extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

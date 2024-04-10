@@ -31,6 +31,7 @@ public class loginPage extends HttpServlet {
 		String createUser = request.getParameter("createUser");
 		String loginFail = request.getParameter("loginFail");
 
+		out.println("<div>");
 		out.println("<form action=\"handle_Login\" method=\"post\">");
 		out.println("    <label for=\"username\">Username:</label><br>");
 		out.println("    <input type=\"text\" id=\"username\" name=\"userName\" required><br><br>");
@@ -39,6 +40,7 @@ public class loginPage extends HttpServlet {
 		out.println("    <input type=\"submit\" value=\"Login\">");
 		out.println("	 <a href=\"/UI_Quiz/signUpUser\">Signup</a>");
 		out.println("</form>");
+		out.println("</div>");
 
 		if (createUser != null) {
 			if (createUser.compareTo("success") == 0) {
@@ -51,7 +53,7 @@ public class loginPage extends HttpServlet {
 			}
 		}
 
-
+		uiServiceController.cssLoginPage(out);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
